@@ -39,18 +39,19 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
         # add to cart
         postdata = request.POST.copy()
         form = ProductAddToCartForm(request, postdata)
-        print(form.is_valid())
+        print(postdata)
         if form.is_valid():
             print('valid')
             cart.add_to_cart(request)
             # if test cookie worked, get rid of it
-            if request.session.test_cookie_work():
+            if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
             url = urlresolvers.reverse('show_cart')
+            print(url)
             return HttpResponseRedirect(url)
     else:
         form = ProductAddToCartForm(request=request, label_suffix=":")
+
     form.fields['product_slug'].widget.attrs['value'] = product_slug
     request.session.set_test_cookie()
-    return render(request, template_name, {'p': p, 'categories': categories})
-    #return render(request, template_name, RequestContext(request, locals()))
+    return render(request, template_name, {'p': p, 'categories': categories, 'form': form})

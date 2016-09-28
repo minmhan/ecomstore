@@ -25,7 +25,7 @@ def _generate_cart_id():
 
 # return all items from the current user's cart
 def get_cart_items(request):
-    return CartItem.objects.filter(card_id=_cart_id(request))
+    return CartItem.objects.filter(cart_id=_cart_id(request))
 
 
 # add an item to the cart
@@ -38,6 +38,7 @@ def add_to_cart(request):
     p = get_object_or_404(Product, slug=product_slug)
     # get products in cart
     cart_products = get_cart_items(request)
+    print('pass get items')
     product_in_cart = False
     # check to see if item is already in cart
     for cart_item in cart_products:
@@ -53,7 +54,43 @@ def add_to_cart(request):
         ci.cart_id = _cart_id(request)
         ci.save()
 
+
 # return total number of items in user's cart
 def cart_distinct_item_count(request):
     return get_cart_items(request).count()
 
+
+def get_single_item(request, item_id):
+    return get_object_or_404(CartItem, id=item_id, cart_id=_cart_id(request))
+
+
+# update quantity for single item
+def update_cart(request):
+    postdata = request.POST.copy()
+    item_id = postdata['item_id']
+    quantity = postdata['quantity']
+    cart_item = get_single_item(request, item_id)
+    if cart_item:
+        if int(quantity) > 0:
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+        else:
+            remove_from_cart(request)
+
+
+# remove a single item from cart
+def remove_from_cart(request):
+    postdata = request.POST.copy()
+    item_id = postdata['item_id']
+    cart_item = get_single_item(request, item_id)
+    if cart_item:
+        cart_item.delete()
+
+
+# gets the total cost for the current cart
+def cart_subtotal(request):
+    cart_total = decimal.Decimal('0.00')
+    cart_products = get_cart_items(request)
+    for cart_item in cart_products:
+        cart_total += cart_item.product.price * cart_item.quantity
+    return cart_total
