@@ -23,6 +23,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('catalog.urls')),
     url(r'^', include('cart.urls')),
+    url(r'^', include('accounts.urls')),
+    #url(r'^accounts/', include('accounts.urls')),
+    #url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG is True:

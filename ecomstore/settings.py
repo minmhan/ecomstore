@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'catalog',
     'utils',
     'cart',
+    'accounts',
 ]
 SITE_ID = 1
 
@@ -135,3 +136,5 @@ MEDIA_URL = '/media/'
 SITE_NAME = 'Modern Musician'
 META_KEYWORDS = 'Music, instruments, music accessories'
 META_DESCRIPTION = 'Modern musician is an online supplier of instruments'
+
+LOGIN_REDIRECT_URL = '/accounts/my_account/'
