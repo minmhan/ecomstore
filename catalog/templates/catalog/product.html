@@ -1,9 +1,9 @@
 {% extends "catalog.html" %}
 
 {% block content %}
-{{ MEDIA_URL }} a
+
     <div class="product_image">
-        <img alt="alt" src="{{ MEDIA_URL }}images/products/beginning_django_e-commerce.jpg" />
+        <img alt="alt" src="{{ MEDIA_URL }}{{ p.image }}" alt="{{ p.image_catpion }}" />
     </div>
     <h1>{{ p.name }}</h1>
     Brand: <em>{{ p.brand }}</em>
