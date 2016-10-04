@@ -1,8 +1,17 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 
+
+class ActiveCategoryManager(models.Manager):
+    def get_query_set(self):
+        return super(ActiveCategoryManager, self).get_query_set().filter(is_active=True)
+
+
 # Create your models here.
 class Category(models.Model):
+    objects = models.Manager()
+    active = ActiveCategoryManager()
+
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True, help_text='Unique value for product page URL, created from name.')
     description = models.TextField()
@@ -24,7 +33,15 @@ class Category(models.Model):
         return reverse('category', args=({self.slug}))
 
 
+class ActiveProductManager(models.Manager):
+    def get_query_set(self):
+        return super(ActiveProductManager, self).get_query_set().filter(is_active=True)
+
+
 class Product(models.Model):
+    object = models.Manager()
+    active = ActiveProductManager()
+
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, help_text='Unique value for product page URL, created from name.')
     brand = models.CharField(max_length=50)

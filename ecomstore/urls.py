@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('catalog.urls')),
@@ -26,6 +27,7 @@ urlpatterns = [
     url(r'^', include('accounts.urls')),
     #url(r'^accounts/', include('accounts.urls')),
     #url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^search/', include('search.urls')),
 ]
 
 if settings.DEBUG is True:

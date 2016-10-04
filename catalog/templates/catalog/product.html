@@ -3,7 +3,8 @@
 {% block content %}
 
     <div class="product_image">
-        <img alt="alt" src="{{ MEDIA_URL }}{{ p.image }}" alt="{{ p.image_catpion }}" />
+        <img alt="alt" src="{{ p.image.url }}" alt="{{ p.name }}" /> <br />
+        {{ p.image_caption }}
     </div>
     <h1>{{ p.name }}</h1>
     Brand: <em>{{ p.brand }}</em>

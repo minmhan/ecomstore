@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'utils',
     'cart',
     'accounts',
+    'search',
 ]
 SITE_ID = 1
 
@@ -138,3 +139,5 @@ META_KEYWORDS = 'Music, instruments, music accessories'
 META_DESCRIPTION = 'Modern musician is an online supplier of instruments'
 
 LOGIN_REDIRECT_URL = '/accounts/my_account/'
+
+PRODUCTS_PER_PAGE = 10
