@@ -13,11 +13,14 @@ class Category(models.Model):
     active = ActiveCategoryManager()
 
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, unique=True, help_text='Unique value for product page URL, created from name.')
+    slug = models.SlugField(max_length=50, unique=True,
+                            help_text='Unique value for product page URL, created from name.')
     description = models.TextField()
     is_active = models.BooleanField(default=True)
-    meta_keywords = models.CharField("Meta Keywords", max_length=255, help_text='Comma-delimited set of SEO keywords for meta tag')
-    meta_description = models.CharField("Meta Description", max_length=255, help_text='Content for description meta tag')
+    meta_keywords = models.CharField("Meta Keywords", max_length=255,
+                                     help_text='Comma-delimited set of SEO keywords for meta tag')
+    meta_description = models.CharField("Meta Description", max_length=255,
+                                        help_text='Content for description meta tag')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,12 +41,19 @@ class ActiveProductManager(models.Manager):
         return super(ActiveProductManager, self).get_query_set().filter(is_active=True)
 
 
+class FeaturedProductManager(models.Manager):
+    def all(self):
+        return super(FeaturedProductManager, self).all().filter(is_active=True).filter(is_featured=True)
+
+
 class Product(models.Model):
     object = models.Manager()
     active = ActiveProductManager()
+    featured = FeaturedProductManager()
 
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, unique=True, help_text='Unique value for product page URL, created from name.')
+    slug = models.SlugField(max_length=255, unique=True,
+                            help_text='Unique value for product page URL, created from name.')
     brand = models.CharField(max_length=50)
     sku = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=9, decimal_places=2)
@@ -69,10 +79,9 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
     def get_absolute_url(self):
         print('get absolute url')
-        #return ('category_product', (), { 'product_slug': self.slug })
+        # return ('category_product', (), { 'product_slug': self.slug })
         return reverse('product', args=(self.slug,))
 
     def sale_price(self):
@@ -81,3 +90,5 @@ class Product(models.Model):
         else:
             return None
 
+    def cross_sells(self):
+        pass
