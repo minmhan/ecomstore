@@ -1,12 +1,16 @@
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from catalog.models import Category, Product
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from catalog.models import Category, Product, ProductReview
 from cart import cart
-from catalog.forms import ProductAddToCartForm
+from catalog.forms import ProductAddToCartForm, ProductReviewForm
 from django.conf import settings
 from stats import stats
 from ecomstore.settings import PRODUCTS_PER_ROW
+import json
 
 
 def index(request, template_name="catalog/index.html"):
@@ -38,10 +42,14 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     page_title = p.name
     meta_keywords = p.meta_keywords
     meta_description = p.meta_description
+
+    product_reviews = ProductReview.approved.filter(product=p).order_by('-date')
+    review_form = ProductReviewForm()
+
     if request.method == 'POST':
         # add to cart
-        postdata = request.POST.copy()
-        form = ProductAddToCartForm(request, postdata)
+        post_data = request.POST.copy()
+        form = ProductAddToCartForm(request, post_data)
         if form.is_valid():
             print('valid')
             cart.add_to_cart(request)
@@ -55,4 +63,27 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
 
     form.fields['product_slug'].widget.attrs['value'] = product_slug
     request.session.set_test_cookie()
-    return render(request, template_name, {'p': p, 'categories': categories, 'form': form})
+    return render(request, template_name,
+                  {'p': p, 'categories': categories, 'form': form, 'product_reviews': product_reviews,
+                   'review_form': review_form})
+
+
+@login_required
+def add_review(request):
+    form = ProductReviewForm(request.POST)
+    if form.is_valid():
+        review = form.save(commit=False)
+        slug = request.POST.get('slug')
+        product = Product.active.get(slug=slug)
+        review.user = request.user
+        review.product = product
+        review.save()
+
+        template = "catalog/product_review.html"
+        html = render_to_string(template, {'review': review})
+        response = json.dumps({'success': 'True', 'html': html})
+    else:
+        html = form.errors.as_url()
+        response = json.dumps({ 'success':'False', 'html': html})
+    return HttpResponse(response, content_type='application/javascript;charset=utf-8')
+

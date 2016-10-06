@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 
 class ActiveCategoryManager(models.Manager):
@@ -92,3 +93,22 @@ class Product(models.Model):
 
     def cross_sells(self):
         pass
+
+
+class ActiveProductReviewManager(models.Manager):
+    def all(self):
+        return super(ActiveCategoryManager, self).all().filter(is_approved=True)
+
+
+class ProductReview(models.Model):
+    RATINGS = ((5, 5), (4, 4), (3, 3), (2, 2), (1, 1),)
+    product = models.ForeignKey(Product)
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5, choices=RATINGS)
+    is_approved = models.BooleanField(default=True)
+    content = models.TextField()
+
+    objects = models.Manager()
+    approved = ActiveCategoryManager()
