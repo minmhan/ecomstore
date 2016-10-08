@@ -3,7 +3,16 @@ $(function(){
     $("#review_form").addClass('hidden');
     $("#add_review").click(slideToggleReviewForm);
     $("#cancel_review").click(slideToggleReviewForm);
+    statusBox();
 })
+
+function statusBox(){
+    $("<div id='loading'>Loading...</div>")
+        .prependTo("#main")
+        .ajaxStart(function() { $(this).show();})
+        .ajaxStop(function() { $(this).hide();})
+}
+
 
 function slideToggleReviewForm(){
     $("#review_form").slideToggle();
