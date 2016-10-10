@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 ]
 SITE_ID = 1
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'marketing.urlcanon.URLCanonicalizationMiddleware',
 ]
 
 ROOT_URLCONF = 'ecomstore.urls'
@@ -143,3 +144,6 @@ LOGIN_REDIRECT_URL = '/accounts/my_account/'
 
 PRODUCTS_PER_PAGE = 10
 PRODUCTS_PER_ROW = 4
+
+CANON_URL_HOST = 'www.django-ecommerce.com'
+CANON_URLS_TO_REWRITE = ['django-ecommerce.com', 'modernmusician.com']
