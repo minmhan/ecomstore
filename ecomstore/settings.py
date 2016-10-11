@@ -25,7 +25,7 @@ SECRET_KEY = 'ojis3b9i#u*d#l(y+b=n)maytxt0wwranq@02i)1wgn3fv!t+h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'accounts',
     'search',
     'stats',
+    'marketing',
 ]
 SITE_ID = 1
 
