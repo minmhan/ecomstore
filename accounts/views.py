@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core import urlresolvers
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -22,9 +23,10 @@ def register(request, template_name='accounts/register.html'):
     else:
         form = UserCreationForm()
     page_title = 'User Registration'
-    return render(request, template_name, {'form': form, 'page_title':page_title})
+    return render(request, template_name, {'form': form, 'page_title': page_title})
 
 
+@login_required
 def my_account(request):
     page_title = 'My Account'
     name = request.user.username
