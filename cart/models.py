@@ -1,6 +1,7 @@
 from django.db import models
 from catalog.models import Product
 
+
 # Create your models here.
 class CartItem(models.Model):
     cart_id = models.CharField(max_length=50)
@@ -25,5 +26,5 @@ class CartItem(models.Model):
         return self.product.get_absolute_url()
 
     def augment_quantity(self, quantity):
-        self.quantity = self.quantity + int(quantity)
+        self.quantity += int(quantity)
         self.save()

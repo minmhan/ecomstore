@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'^order_info/$', views.order_info, name='order_info'),
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, {'template_name': 'accounts/logged_out.html'}, name='logout'),
-    url(r'^accounts/password_change/$', password_change, {'template_name': 'accounts/password_change_form.html'}, name='password_change'),
+    url(r'^accounts/password_change/$', password_change, {'template_name': 'accounts/password_change_form.html' }, name='password_change'),
     url(r'^password_change_done/$', password_change_done, {'template_name':'accounts/password_change_done.html'}, name='password_change_done'),
 ]

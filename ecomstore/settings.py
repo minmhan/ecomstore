@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'search',
     'stats',
     'marketing',
+    'checkout',
 ]
 SITE_ID = 1
 
@@ -62,6 +63,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     'marketing.urlcanon.URLCanonicalizationMiddleware',
+    'ecomstore.SSLMiddleware.SSLRedirect',
 ]
 
 ROOT_URLCONF = 'ecomstore.urls'
@@ -151,3 +153,9 @@ PRODUCTS_PER_ROW = 4
 
 CANON_URL_HOST = 'www.django-ecommerce.com'
 CANON_URLS_TO_REWRITE = ['django-ecommerce.com', 'modernmusician.com']
+# Change to true before deploying into production
+ENABLE_SSL = False
+
+AUTHNET_LOGIN = '8b7c8wTxZ4g'
+AUTHNET_KEY = '8697zhE4wu53WCXh'
+AUTHNET_SECRET = 'Simon'

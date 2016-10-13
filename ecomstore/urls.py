@@ -29,6 +29,7 @@ urlpatterns = [
     #url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^search/', include('search.urls')),
     url(r'^', include('marketing.urls')),
+    url(r'^', include('checkout.urls')),
 ]
 
 handler404 = 'ecomstore.views.file_not_found_404'

@@ -25,6 +25,18 @@
                 {{ cart_subtotal|currency }}
             </th>
         </tr>
+        {% if cart_items %}
+        <tr>
+            <th class="right" colspan="6">
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <input type="submit" name="submit" value="Checkout" alt="Checkout" />
+                </form>
+            </th>
+        </tr>
+        {% endif %}
+        </tfoot>
+    <tbody>
     {% if cart_items %}
         {% for item in cart_items %}
         <tr>
@@ -59,7 +71,7 @@
             <td colspan="6" style="height:30px">Your cart is empty.</td>
         </tr>
     {% endif %}
-    </tfoot>
+    </tbody>
 </table>
 {% endblock %}
 
