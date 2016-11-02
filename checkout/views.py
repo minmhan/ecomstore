@@ -6,6 +6,7 @@ from checkout.forms import CheckoutForm
 from checkout.models import Order, OrderItem
 from checkout import checkout
 from cart import cart
+from accounts import profile
 
 
 def show_checkout(request, template_name='checkout/checkout.html'):
@@ -26,7 +27,11 @@ def show_checkout(request, template_name='checkout/checkout.html'):
         else:
             error_message = 'Correct the errors below'
     else:
-        form = CheckoutForm()
+        if request.user.is_authenticated():
+            user_profile = profile.retrieve(request)
+            form = CheckoutForm(instance=user_profile)
+        else:
+            form = CheckoutForm()
     page_title = 'Checkout'
     return render(request, template_name, {'form':form, 'page_title':page_title})
 

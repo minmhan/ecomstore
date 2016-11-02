@@ -1,27 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from catalog.models import Product
+from django.core.urlresolvers import reverse
 import decimal
 
 
-class Order(models.Model):
-    SUBMITTED = 1
-    PROCESSED = 2
-    SHIPPED = 3
-    CANCELLED = 4
+class BaseOrderInfo(models.Model):
+    class Meta:
+        abstract = True
 
-    ORDER_STATUS = ((SUBMITTED, 'Submitted'),
-                    (PROCESSED, 'Processed'),
-                    (SHIPPED, 'Shipped'),
-                    (CANCELLED, 'Cancelled'),)
 
-    # order info
-    date = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=ORDER_STATUS, default=SUBMITTED)
-    ip_address = models.GenericIPAddressField()
-    last_updated = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, null=True)
-    transaction_id = models.CharField(max_length=20)
 
     # contact info
     email = models.EmailField(max_length=50)
@@ -45,6 +33,26 @@ class Order(models.Model):
     billing_country = models.CharField(max_length=50)
     billing_zip = models.CharField(max_length=10)
 
+
+class Order(BaseOrderInfo):
+    SUBMITTED = 1
+    PROCESSED = 2
+    SHIPPED = 3
+    CANCELLED = 4
+
+    ORDER_STATUS = ((SUBMITTED, 'Submitted'),
+                    (PROCESSED, 'Processed'),
+                    (SHIPPED, 'Shipped'),
+                    (CANCELLED, 'Cancelled'),)
+
+    # order info
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=ORDER_STATUS, default=SUBMITTED)
+    ip_address = models.GenericIPAddressField()
+    last_updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, null=True)
+    transaction_id = models.CharField(max_length=20)
+
     def __str__(self):
         return 'Order #' + str(self.id)
 
@@ -55,6 +63,10 @@ class Order(models.Model):
         for item in order_items:
             total += item.total
         return total
+
+    @models.permalink
+    def get_absolute_url(self):
+        return reverse('order_details', args=({self.id}))
 
 
 class OrderItem(models.Model):
@@ -80,6 +92,7 @@ class OrderItem(models.Model):
 
     def get_absolute_url(self):
         return self.product.get_absolute_url()
+
 
 
 

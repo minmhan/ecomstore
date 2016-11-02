@@ -159,3 +159,5 @@ ENABLE_SSL = False
 AUTHNET_LOGIN = '8b7c8wTxZ4g'
 AUTHNET_KEY = '8697zhE4wu53WCXh'
 AUTHNET_SECRET = 'Simon'
+
+AUTH_PROFILE_MODULE = 'accounts.userprofile'
