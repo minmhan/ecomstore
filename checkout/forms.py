@@ -41,11 +41,11 @@ def cardLuhnChecksumIsValid(card_number):
     for count in range(0, num_digits):
         digit = int(card_number[count])
         if not ((count & 1) ^ oddeven):
-            digit = digit * 2
+            digit *= 2
         if digit > 9:
-            digit = digit - 9
-        sum = sum + digit
-    return ((sum % 10) == 0)
+            digit -= 9
+        sum += digit
+    return sum % 10 == 0
 
 
 class CheckoutForm(forms.ModelForm):
