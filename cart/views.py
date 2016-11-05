@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.core import urlresolvers
 from cart import cart
 from checkout import checkout
 
 
 # Create your views here.
 def show_cart(request):
+    if cart.is_empty(request):
+        cart_url = urlresolvers.reverse('show_cart')
+        return HttpResponseRedirect(cart_url)
     if request.method == 'POST':
         postdata = request.POST.copy()
         if postdata['submit'] == 'Remove':

@@ -10,16 +10,16 @@ from accounts import profile
 
 
 def show_checkout(request, template_name='checkout/checkout.html'):
-    #if cart.is_empty(request):
-    #    cart_url = urlresolvers.reverse('show_cart')
-    #    return HttpResponseRedirect(cart_url)
+    if cart.is_empty(request):
+        cart_url = urlresolvers.reverse('show_cart')
+        return HttpResponseRedirect(cart_url)
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = CheckoutForm(postdata)
         if form.is_valid():
             response = checkout.process(request)
-            order_number = response.get('order_number',0)
-            error_message = response.get('message','')
+            order_number = response.get('order_number', 0)
+            error_message = response.get('message', '')
             if order_number:
                 request.session['order_number'] = order_number
                 receipt_url = urlresolvers.reverse('checkout_receipt')
@@ -33,7 +33,7 @@ def show_checkout(request, template_name='checkout/checkout.html'):
         else:
             form = CheckoutForm()
     page_title = 'Checkout'
-    return render(request, template_name, {'form':form, 'page_title':page_title})
+    return render(request, template_name, {'form': form, 'page_title': page_title})
 
 
 def receipt(request, template_name='checkout/receipt.html'):

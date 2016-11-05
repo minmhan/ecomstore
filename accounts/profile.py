@@ -3,8 +3,9 @@ from accounts.forms import UserProfileForm
 
 
 def retrieve(request):
+    # this requires an authenticated user before try calling it
     try:
-        profile = request.user.get_profile()
+        profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         profile = UserProfile(user=request.user)
         profile.save()

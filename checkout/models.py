@@ -9,8 +9,6 @@ class BaseOrderInfo(models.Model):
     class Meta:
         abstract = True
 
-
-
     # contact info
     email = models.EmailField(max_length=50)
     phone = models.CharField(max_length=20)

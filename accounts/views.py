@@ -5,7 +5,8 @@ from django.core import urlresolvers
 from django.contrib.auth.decorators import login_required
 #from accounts.forms import UserProfileForm, RegistrationForm
 from checkout.models import Order, OrderItem
-from accounts import  profile
+from accounts import profile
+from accounts.forms import UserProfileForm
 
 
 # Create your views here.
